@@ -26,11 +26,13 @@
     "@temporalio/client": "^1.9.0",
     "@temporalio/worker": "^1.9.0",
     "@temporalio/workflow": "^1.9.0",
+    "bpmn-moddle": "^8.1.0",
     "nanoid": "3.x"
   },
   "devDependencies": {
     "@temporalio/testing": "^1.9.0",
     "@tsconfig/node16": "^1.0.0",
+    "@types/bpmn-moddle": "^5.1.10",
     "@types/mocha": "8.x",
     "@types/node": "^16.11.43",
     "@typescript-eslint/eslint-plugin": "^5.0.0",

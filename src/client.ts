@@ -1,6 +1,8 @@
 import { Connection, Client } from '@temporalio/client';
-import { example } from './workflows';
+import { billUser } from './workflows';
 import { nanoid } from 'nanoid';
+
+const sequenceVersion = process.argv[2];
 
 async function run() {
   // Connect to the default Server location
@@ -16,10 +18,10 @@ async function run() {
     // namespace: 'foo.bar', // connects to 'default' namespace if not specified
   });
 
-  const handle = await client.workflow.start(example, {
+  const handle = await client.workflow.start(billUser, {
     taskQueue: 'hello-world',
     // type inference works! args: [name: string]
-    args: ['Temporal'],
+    args: ['0123456789', sequenceVersion],
     // in practice, use a meaningful business ID, like customerId or transactionId
     workflowId: 'workflow-' + nanoid(),
   });

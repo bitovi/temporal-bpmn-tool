@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="sid-38422fae-e03e-43a3-bef4-bd33b32041b2" targetNamespace="http://bpmn.io/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="16.4.0">
+  <process id="Process_1" isExecutable="false">
+    <startEvent id="StartEvent_1y45yut" name="Workflow Start">
+      <outgoing>Flow_02e6a1d</outgoing>
+    </startEvent>
+    <task id="Activity_1yquky1" name="getUser">
+      <incoming>Flow_02e6a1d</incoming>
+      <outgoing>Flow_1mhu5my</outgoing>
+    </task>
+    <sequenceFlow id="Flow_02e6a1d" sourceRef="StartEvent_1y45yut" targetRef="Activity_1yquky1" />
+    <task id="Activity_0fjqsih" name="calculateFees">
+      <incoming>Flow_1mhu5my</incoming>
+      <outgoing>Flow_1gb9obv</outgoing>
+    </task>
+    <sequenceFlow id="Flow_1mhu5my" sourceRef="Activity_1yquky1" targetRef="Activity_0fjqsih" />
+    <sequenceFlow id="Flow_1gb9obv" sourceRef="Activity_0fjqsih" targetRef="Event_1w1dzz8" />
+    <endEvent id="Event_1w1dzz8" name="Workflow End">
+      <incoming>Flow_1gb9obv</incoming>
+    </endEvent>
+  </process>
+  <bpmndi:BPMNDiagram id="BpmnDiagram_1">
+    <bpmndi:BPMNPlane id="BpmnPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="StartEvent_1y45yut_di" bpmnElement="StartEvent_1y45yut">
+        <omgdc:Bounds x="152" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="135" y="145" width="72" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1yquky1_di" bpmnElement="Activity_1yquky1">
+        <omgdc:Bounds x="240" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0fjqsih_di" bpmnElement="Activity_0fjqsih">
+        <omgdc:Bounds x="400" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1w1dzz8_di" bpmnElement="Event_1w1dzz8">
+        <omgdc:Bounds x="552" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="536" y="145" width="68" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_02e6a1d_di" bpmnElement="Flow_02e6a1d">
+        <omgdi:waypoint x="188" y="120" />
+        <omgdi:waypoint x="240" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1mhu5my_di" bpmnElement="Flow_1mhu5my">
+        <omgdi:waypoint x="340" y="120" />
+        <omgdi:waypoint x="400" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gb9obv_di" bpmnElement="Flow_1gb9obv">
+        <omgdi:waypoint x="500" y="120" />
+        <omgdi:waypoint x="552" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
