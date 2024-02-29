@@ -1,0 +1,53 @@
+
+services:
+  temporal-dev-server:
+    container_name: temporal-server
+    image: debian:buster
+    command: >
+      bash -c '\
+        apt update && \
+        apt install -y curl && \
+        curl -sSf https://temporal.download/cli.sh | sh && \
+        PATH="\$PATH:/root/.temporalio/bin" >> ~/.bashrc && \
+        source ~/.bashrc && \
+        temporal server start-dev --namespace distributed-systems-examples --ip 0.0.0.0
+      '
+    ports:
+      - 7233:7233
+      - 8233:8233
+
+  worker:
+    container_name: temporal-worker
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    depends_on:
+      - temporal-dev-server
+    restart: always
+    environment:
+      - TEMPORAL_ADDRESS=temporal-dev-server:7233
+
+  api:
+    container_name: application-api
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    depends_on:
+      - worker
+    restart: always
+    environment:
+      - HTTP_PORT=8000
+    ports:
+      - 8000:8000
+    command: npm run api
+
+  ui:
+    container_name: ui
+    build:
+      context: ui
+      dockerfile: Dockerfile
+    depends_on:
+      - api
+    restart: always
+    ports:
+      - 8080:8080

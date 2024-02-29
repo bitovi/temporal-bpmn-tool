@@ -1,13 +1,15 @@
 import { NativeConnection, Worker } from '@temporalio/worker';
 import * as activities from './activities';
 
+const { TEMPORAL_ADDRESS = 'localhost:7233' } = process.env;
+
 async function run() {
   // Step 1: Establish a connection with Temporal server.
   //
   // Worker code uses `@temporalio/worker.NativeConnection`.
   // (But in your application code it's `@temporalio/client.Connection`.)
   const connection = await NativeConnection.connect({
-    address: 'localhost:7233',
+    address: TEMPORAL_ADDRESS,
     // TLS and gRPC metadata configuration goes here.
   });
   // Step 2: Register Workflows and Activities with the Worker.

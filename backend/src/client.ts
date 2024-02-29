@@ -2,11 +2,12 @@ import { Connection, Client } from '@temporalio/client';
 import { billUser } from './workflows';
 import { nanoid } from 'nanoid';
 
-const sequenceVersion = process.argv[2];
+const { TEMPORAL_ADDRESS = 'localhost:7233' } = process.env;
+const sequenceVersion = process.argv[2] || '2';
 
 async function run() {
   // Connect to the default Server location
-  const connection = await Connection.connect({ address: 'localhost:7233' });
+  const connection = await Connection.connect({ address: TEMPORAL_ADDRESS });
   // In production, pass options to configure TLS and other settings:
   // {
   //   address: 'foo.bar.tmprl.cloud',

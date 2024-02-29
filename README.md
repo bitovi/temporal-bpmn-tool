@@ -2,9 +2,8 @@
 
 ### Running this example
 
-1. `temporal server start-dev` to start [Temporal Server](https://github.com/temporalio/cli/#installation).
-1. `npm install` to install dependencies.
-1. `npm run start.watch` to start the Worker.
+1. `docker compose up --build --detach`
+1. Load the UI to make edits: [http://localhost:8080/](http://localhost:8080/)
 1. In another shell, `npm run workflow [number]` to run the Workflow Client.
    - `0`: getUser, and calculateFees
    - `1`: getUser, calculateFees, billUser, updateUser
