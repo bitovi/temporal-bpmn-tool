@@ -26,6 +26,8 @@ services:
     restart: always
     environment:
       - TEMPORAL_ADDRESS=temporal-dev-server:7233
+    volumes:
+      - ./backend/bpmn-examples:/usr/src/app/bpmn-examples
 
   api:
     container_name: application-api
@@ -40,6 +42,8 @@ services:
     ports:
       - 8000:8000
     command: npm run api
+    volumes:
+      - ./backend/bpmn-examples:/usr/src/app/bpmn-examples
 
   ui:
     container_name: ui
