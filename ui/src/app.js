@@ -9,23 +9,25 @@ import $ from 'jquery';
 
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 
-var container = $('#js-drop-zone');
-
-var modeler = new BpmnModeler({
+let selectedFile;
+const container = $('#js-drop-zone');
+const modeler = new BpmnModeler({
   container: '#js-canvas',
   keyboard: {
     bindTo: window,
   },
 });
 
-function createNewDiagram() {
-  fetch('http://localhost:8000/api/diagrams/diagram-2.bpmn')
+function createNewDiagram(filename) {
+  fetch(`http://localhost:8000/api/diagrams/${filename}`)
     .then((result) => {
       return result.text();
     })
     .then((diagramXML) => {
+      selectedFile = filename;
       openDiagram(diagramXML);
-    }).catch((error) => alert(error.message));
+    })
+    .catch((error) => alert(error.message));
 }
 
 async function openDiagram(xml) {
@@ -47,14 +49,11 @@ function registerFileDrop(container, callback) {
     e.stopPropagation();
     e.preventDefault();
 
-    var files = e.dataTransfer.files;
-
-    var file = files[0];
-
-    var reader = new FileReader();
-
+    const files = e.dataTransfer.files;
+    const file = files[0];
+    const reader = new FileReader();
     reader.onload = function (e) {
-      var xml = e.target.result;
+      const xml = e.target.result;
 
       callback(xml);
     };
@@ -88,27 +87,20 @@ if (!window.FileList || !window.FileReader) {
 // bootstrap diagram functions
 
 $(function () {
-  $('#js-create-diagram').click(function (e) {
-    e.stopPropagation();
-    e.preventDefault();
-
-    createNewDiagram();
-  });
-
   $('#save').click(function (e) {
     e.preventDefault();
     e.stopPropagation();
 
     modeler.saveXML().then(({ xml }) => {
-      return fetch('http://localhost:8000/api/diagrams/diagram-2.bpmn', {
+      return fetch(`http://localhost:8000/api/diagrams/${selectedFile}`, {
         method: 'PUT',
         body: xml,
         headers: {
-          "content-type": "text/plain"
-        }
+          'content-type': 'text/plain',
+        },
       })
         .then((result) => {
-          alert("Saved!");
+          alert('Saved!');
           window.location.reload();
         })
         .catch((error) => {
@@ -117,58 +109,24 @@ $(function () {
     });
   });
 
-  $('.buttons a').click(function (e) {
-    if (!$(this).is('.active')) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
+  $(function () {
+    fetch('http://localhost:8000/api/diagrams')
+      .then((result) => {
+        return result.json();
+      })
+      .then((fileList) => {
+        fileList.forEach((filename) => {
+          const link = $(`<li><a href="${filename}">${filename}</a></li>`);
+
+          link.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            createNewDiagram($(e.target).attr('href'));
+          });
+
+          $('.content .intro .note').append(link);
+        });
+      })
+      .catch((error) => alert(error.message));
   });
-
-  // function setEncoded(link, name, data) {
-  //   var encodedData = encodeURIComponent(data);
-
-  //   if (data) {
-  //     link.addClass('active').attr({
-  //       href: 'data:application/bpmn20-xml;charset=UTF-8,' + encodedData,
-  //       download: name,
-  //     });
-  //   } else {
-  //     link.removeClass('active');
-  //   }
-  // }
-
-  // var exportArtifacts = debounce(async function () {
-  //   try {
-  //     const { svg } = await modeler.saveSVG();
-
-  //     setEncoded(downloadSvgLink, 'diagram.svg', svg);
-  //   } catch (err) {
-  //     console.error('Error happened saving svg: ', err);
-  //     setEncoded(downloadSvgLink, 'diagram.svg', null);
-  //   }
-
-  //   try {
-  //     const { xml } = await modeler.saveXML({ format: true });
-  //     setEncoded(downloadLink, 'diagram.bpmn', xml);
-  //   } catch (err) {
-  //     console.error('Error happened saving XML: ', err);
-  //     setEncoded(downloadLink, 'diagram.bpmn', null);
-  //   }
-  // }, 500);
-
-  // modeler.on('commandStack.changed', exportArtifacts);
 });
-
-// helpers //////////////////////
-
-// function debounce(fn, timeout) {
-//   var timer;
-
-//   return function () {
-//     if (timer) {
-//       clearTimeout(timer);
-//     }
-
-//     timer = setTimeout(fn, timeout);
-//   };
-// }

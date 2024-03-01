@@ -38,7 +38,7 @@ router.get('/diagrams/:filename', async (ctx) => {
   // ctx.set('access-control-allow-origin', '*');
 });
 
-router.get('/diagrams/', async (ctx) => {
+router.get('/diagrams', async (ctx) => {
   const result = await fs.promises.readdir('./bpmn-examples/');
   ctx.body = result;
 });

@@ -51,3 +51,5 @@ services:
     restart: always
     ports:
       - 8080:8080
+    volumes:
+      - ./ui/src/:/usr/src/app/src
